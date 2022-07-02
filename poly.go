@@ -1,5 +1,6 @@
 package main
 
+//poly2 branch
 import (
 	"database/sql"
 	"errors"
@@ -10,47 +11,42 @@ type Table interface { //the abstraction we want
 	Name() string
 	Query()
 }
-type SQLTable struct { //SQL Table
+type SQL struct { //SQL Table
 	db   *sql.DB
 	name string
 }
-type BD interface { //KV or BigData store
-	Name() string
-	Query()
-	//	Replicate()
-}
-type foo interface {
-	BDS | SQLTable
-}
-type AnyDB struct { //implements BD & Table interfaces - HOW?
-	name string
-}
-type BDS struct { //implements BD & Table interfaces - HOW?
-	num int
+type NoSQL struct { //implements BD & Table interfaces - HOW?
+	guid int
 }
 
-func (t *SQLTable) Query() { //implements Table interface
+type foo interface {
+	NoSQL | SQL
+}
+type foo2 struct {
+}
+
+func (t *SQL) Query() { //implements Table interface
 	fmt.Println("SQL Query")
 }
-func (t *AnyDB) Query() { //also implements Table interface
+func (t *NoSQL) Query() { //also implements Table interface
 	fmt.Println("BigData Query")
 }
-func (t *AnyDB) Name() string { //also implements Table interface
+func (t *SQL) Name() string { //also implements Table interface
 	return t.name
 }
-
-/*func fancyFunc(i *Table) { //can take either BDTable or SQLTable
-	(*i).Query()
-}*/
-
-func InitBD(dbtype, dbfilename string) (*BDS, error) {
-	return &BDS{0}, errors.New("no-error")
+func (t *NoSQL) Name() int { //also implements Table interface
+	return t.guid
 }
 
-func InitSQL(dbtype, dbfilename string) (*AnyDB, error) {
-	return &AnyDB{"funkySQLDB"}, errors.New("no-error")
+func InitNoSQL(dbtype, dbfilename string) (*NoSQL, error) {
+	return &NoSQL{0}, errors.New("no-error")
 }
-func InitDB(dbtype, dbfilename string) (*AnyDB, error) {
+
+func InitSQL(dbtype, dbfilename string) (*SQL, error) {
+	return &SQL{nil, "funkySQLDB"}, errors.New("no-error")
+}
+
+/* func InitDB(dbtype, dbfilename string) (*AnyDB, error) {
 	var errDB error
 	var DB *AnyDB
 
@@ -63,11 +59,11 @@ func InitDB(dbtype, dbfilename string) (*AnyDB, error) {
 		errDB = errors.New("no valid database provider specified")
 	}
 	return DB, errDB
-}
+} */
 
 func main() {
 	//	SQLTb, _ := InitSQLDB("postgres", "foo")
-	myBD, _ := InitDB("nosql", "foo")
+	myBD, _ := InitNoSQL("nosql", "foo")
 	myBD.Query()
 	sqldb, _ := InitSQL("sqlite3", "bar")
 	sqldb.Query()
