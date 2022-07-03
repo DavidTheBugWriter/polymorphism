@@ -36,40 +36,41 @@ func (t *NoSQL) Name() string { //also implements Table interface
 	return string(t.guid)
 }
 
-func InitNoSQL(dbtype, dbfilename string) (*NoSQL, error) {
+func InitNoSQL(dbtype, dbfilename string) (Table, error) {
 	return &NoSQL{0}, errors.New("no-error")
 }
 
-func InitSQL(dbtype, dbfilename string) (*SQL, error) {
+func InitSQL(dbtype, dbfilename string) (Table, error) {
 	return &SQL{nil, "funkySQLDB"}, errors.New("no-error")
 }
 
-/* func InitDB(dbtype, dbfilename string) (*AnyDB, error) {
+func InitDB(dbtype, dbfilename string) (Table, error) {
 	var errDB error
-	var DB *AnyDB
+	var DB Table
 
 	switch dbtype {
 	case "sqlite3":
 		DB, errDB = InitSQL(dbtype, dbfilename)
 	case "nosql":
-		DB, errDB = InitBD(dbtype, dbfilename)
+		DB, errDB = InitNoSQL(dbtype, dbfilename)
 	default:
 		errDB = errors.New("no valid database provider specified")
 	}
 	return DB, errDB
-} */
+}
 
 func main() {
 	//	SQLTb, _ := InitSQLDB("postgres", "foo")
 	myBD, _ := InitNoSQL("nosql", "foo")
 	//myBD.Query()
 	sqldb, _ := InitSQL("sqlite3", "bar")
+	genericDB, _ := InitDB("nosql", "foo")
 	//sqldb.Query()
 	col := []Table{myBD, sqldb}
 	for _, c := range col {
 		fmt.Println("query", c.Name())
 	}
-	myDBchoice := []Table{sqldb}
+	myDBchoice := []Table{genericDB}
 	myDBchoice[0].Query()
 	//	fmt.Printf("Hello, 世界 %v-%v-%v", UT, errDB, conn)
 }
