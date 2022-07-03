@@ -9,7 +9,6 @@ figure out, or find online, an example of how to use polymorphic interfaces for 
 function that could use handle two difference DB structures with interface(s).
 
 
-It turns out that the receiver functions InitSQL/InitNoSQL needs to return the interface 'Table' not a 
-struct pointer (i.e. *SQL/*NoSQL). 
+It turns out that the receiver functions InitSQL/InitNoSQL (poly.go lines 39,43,47) needs to return the interface 'Table' not a struct pointer (i.e. *SQL/*NoSQL). 
 
 I hope this is a productive hint to other Golang users.
