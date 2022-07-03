@@ -1,5 +1,8 @@
-# polymorphism
-This is really a gist. I had the idea of using several databases simultaneously within a project: I mght use 
+# Go language polymorphism with interfaces
+
+This is really a gist rather than a project. 
+
+I had the idea of using several databases simultaneously within a project: I mght use 
 Redis as a cache and a SQL and a NoSQL. This might actually be an architecture 'smell' in some instances 
 but I became interested in how to do it and flailed a bit. Most examples were just very basic but I couldn't
 figure out, or find online, an example of how to use polymorphic interfaces for a generic database initialiser 
