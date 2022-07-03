@@ -19,10 +19,8 @@ type NoSQL struct { //implements BD & Table interfaces - HOW?
 	guid int
 }
 
-type foo interface {
-	NoSQL | SQL
-}
-type foo2 struct {
+func (t *NoSQL) Guid() int {
+	return t.guid
 }
 
 func (t *SQL) Query() { //implements Table interface
@@ -34,8 +32,8 @@ func (t *NoSQL) Query() { //also implements Table interface
 func (t *SQL) Name() string { //also implements Table interface
 	return t.name
 }
-func (t *NoSQL) Name() int { //also implements Table interface
-	return t.guid
+func (t *NoSQL) Name() string { //also implements Table interface
+	return string(t.guid)
 }
 
 func InitNoSQL(dbtype, dbfilename string) (*NoSQL, error) {
@@ -64,8 +62,14 @@ func InitSQL(dbtype, dbfilename string) (*SQL, error) {
 func main() {
 	//	SQLTb, _ := InitSQLDB("postgres", "foo")
 	myBD, _ := InitNoSQL("nosql", "foo")
-	myBD.Query()
+	//myBD.Query()
 	sqldb, _ := InitSQL("sqlite3", "bar")
-	sqldb.Query()
+	//sqldb.Query()
+	col := []Table{myBD, sqldb}
+	for _, c := range col {
+		fmt.Println("query", c.Name())
+	}
+	myDBchoice := []Table{sqldb}
+	myDBchoice[0].Query()
 	//	fmt.Printf("Hello, 世界 %v-%v-%v", UT, errDB, conn)
 }
